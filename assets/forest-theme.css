@@ -1,0 +1,15 @@
+:root{--sky:#366e58;--ground:#09271f;--surface:#194535;--tint:#ffffff08;--light:#c5f0d5;--wash:transparent;--photo:brightness(.91)}
+:root[data-sky=sun]{--wash:radial-gradient(ellipse at 22% 6%,#ffcd6f80,transparent 59%);--photo:saturate(1.28) brightness(1.12)}
+:root[data-sky=cloud]{--wash:linear-gradient(162deg,#9cbdc344,transparent);--photo:saturate(.85)}
+:root[data-sky=fog]{--wash:linear-gradient(10deg,transparent,#c3d3ce66,transparent);--photo:saturate(.65)}
+:root[data-sky=rain],:root[data-sky=storm]{--sky:#386075;--surface:#224249;--ground:#0c2229;--wash:linear-gradient(120deg,#24435c55,#13233175);--photo:saturate(.72)}
+:root[data-sky=snow]{--sky:#517481;--surface:#294e54;--ground:#152d34;--wash:linear-gradient(155deg,#daebf18c,transparent);--photo:saturate(.48)}
+:root[data-night=true]{--ground:#091c21;--surface:#173438;--sky:#354d63;--photo:brightness(.45) saturate(.68)}
+.hero{position:relative;isolation:isolate;overflow:hidden;background:var(--ground)}
+.hero:before,.hero:after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none}
+.hero:before{background:url(forest.jpg) center 58%/cover;filter:var(--photo)}
+.hero:after{background:linear-gradient(270deg,#001c1ce3,transparent 95%),var(--wash,transparent)}
+[data-sky=rain] .hero:after,[data-sky=storm] .hero:after{background-image:linear-gradient(270deg,#031d27c9,transparent),repeating-linear-gradient(108deg,transparent 0 41px,#d9f2ff30 42px,transparent 44px);background-size:auto,80px 148px}
+[data-sky=snow] .hero:after{background-image:linear-gradient(270deg,#183744ad,transparent),radial-gradient(circle at 24px 18px,#fffd 1px,transparent 2px),radial-gradient(circle at 17px 45px,#fff9 2px,transparent 3px);background-size:auto,61px 81px,89px 103px}
+[data-sky=storm] .hero:before{filter:var(--photo) brightness(.68)}
+.games{background:linear-gradient(130deg,var(--surface),var(--ground));position:relative}.tile,.tile:last-child{background:linear-gradient(135deg,var(--sky),var(--surface))}.tools-link{display:flex;justify-content:space-between;text-decoration:none;color:#e9fff4;border-top:1px solid #ffffff27;margin-top:12px;padding:12px 5px 0;font-weight:700}

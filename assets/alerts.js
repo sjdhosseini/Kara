@@ -1,0 +1,14 @@
+(()=>{
+ const el=id=>document.getElementById(id),get=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d;}catch{return d;}},put=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
+ let options=get('weatherOptions',{auto:true,alerts:true,rain:10,wind:60});
+ window.syncWeather=()=>{const config={...options,favorites:get('favorites',[]),place:get('place',{name:'قائم‌شهر',lat:36.463,lon:52.86}),model:get('model','best_match')};window.Native?.configure?.(JSON.stringify(config));paint();};
+ function paint(){if(!el('homeFavorites'))return;let box=el('homeFavorites');box.replaceChildren();let list=get('favorites',[]);if(!list.length)box.textContent='هنوز مکانی ذخیره نکرده‌ای.';list.forEach(p=>{let row=document.createElement('div'),b=document.createElement('button'),del=document.createElement('button');b.textContent=p.name;b.onclick=()=>choose(p);del.textContent='×';del.setAttribute('aria-label','حذف '+p.name);del.onclick=()=>{put('favorites',get('favorites',[]).filter(x=>x.lat!==p.lat||x.lon!==p.lon));syncWeather();};row.append(b,del);box.append(row);});status();}
+ function status(){if(!el('backgroundStatus'))return;let b={};try{b=JSON.parse(window.Native?.backgroundStatus?.()||'{}');}catch{}el('backgroundStatus').textContent=!window.Native?'هشدار پس‌زمینه در نسخهٔ اندروید فعال است.':(!options.auto?'بررسی خودکار خاموش است. ':!b.permission?'برای دریافت هشدار، اجازهٔ اعلان‌ها را فعال کن. ':'')+(b.checked?'آخرین بررسی: '+new Date(b.checked).toLocaleString('fa-IR'):'هنوز بررسی پس‌زمینه انجام نشده است.')+(b.error?' · '+b.error:'');}
+ if(el('autoWeather')){
+ el('weatherLead').value=String(options.lead||6);el('autoWeather').checked=options.auto;el('alertWeather').checked=options.alerts;el('rainLimit').value=options.rain;el('windLimit').value=options.wind;
+ const update=()=>{if(!el('rainLimit').reportValidity()||!el('windLimit').reportValidity()||!el('rainLimit').value||!el('windLimit').value)return;options={lead:+el('weatherLead').value,auto:el('autoWeather').checked,alerts:el('alertWeather').checked,rain:+el('rainLimit').value,wind:+el('windLimit').value};put('weatherOptions',options);syncWeather();};['autoWeather','alertWeather','rainLimit','windLimit','weatherLead'].forEach(id=>el(id).onchange=update);
+ el('addFavorite').onclick=()=>{let p=get('place',{name:'قائم‌شهر',lat:36.463,lon:52.86}),list=get('favorites',[]).filter(x=>x.lat!==p.lat||x.lon!==p.lon);put('favorites',[p,...list].slice(0,50));syncWeather();};el('findFavorite').onclick=()=>el('cities').click();el('notifyPermission').onclick=()=>window.Native?.enableNotifications?.();el('checkWeather').onclick=()=>{window.Native?.checkWeather?.();load();status();};
+ let last=Date.now();const refresh=()=>{status();if(options.auto&&Date.now()-last>=3600000&&!document.hidden){last=Date.now();load();}};setInterval(refresh,60000);document.addEventListener('visibilitychange',refresh);window.addEventListener('focus',status);
+ }
+ syncWeather();
+})();

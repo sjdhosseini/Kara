@@ -1,0 +1,28 @@
+@keyframes enter-surface{from{opacity:.2;translate:0 5px}to{opacity:1;translate:0 0}}
+@keyframes fall-rain{to{transform:translate(-42px,75vh) rotate(12deg)}}
+@keyframes fall-snow{50%{transform:translate(9px,37vh)}to{transform:translate(-10px,75vh)}}
+@keyframes mist-drift{to{transform:translateX(17%);opacity:.63}}
+@keyframes sun-warmth{to{opacity:.72;transform:scale(1.08)}}
+@keyframes stars{to{opacity:.2}}
+@keyframes storm-glow{0%,72%,85%,100%{opacity:0}79%{opacity:.19}}
+body{animation:enter-surface .22s ease-out}
+button,a,input,select{transition:background-color .16s,border-color .16s,box-shadow .16s}
+button:active,a:active{scale:.978}
+main>section:not([hidden]),dialog[open],article{animation:enter-surface .22s ease-out}
+.hero{position:relative;isolation:isolate;overflow:hidden}.hero>*:not(.weather-motion){position:relative}
+.weather-motion{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.weather-motion i{display:none;position:absolute;left:var(--x);top:-20px}
+:is([data-sky=rain],[data-sky=storm]) .weather-motion i{display:block;width:1.5px;height:16px;background:linear-gradient(transparent,#ceeaffb8);transform:rotate(12deg);animation:fall-rain var(--speed) var(--delay) linear infinite}
+[data-sky=snow] .weather-motion i{display:block;width:4px;height:4px;border-radius:100%;background:#ffffffe0;animation:fall-snow calc(var(--speed)*4) var(--delay) linear infinite}
+:is([data-sky=fog],[data-sky=cloud]) .weather-motion:before{content:'';position:absolute;inset:0 -35%;background:radial-gradient(ellipse at 20% 40%,#e5efec59,transparent 52%);animation:mist-drift 8s ease-in-out infinite alternate}
+[data-sky=sun][data-night=false] .weather-motion:before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 12% 16%,#ffe39b72,transparent 48%);animation:sun-warmth 5s infinite alternate}
+[data-night=true][data-sky=sun] .weather-motion i{display:block;top:var(--x);width:2px;height:2px;background:white;border-radius:50%;animation:stars 3s var(--delay) infinite alternate}
+[data-sky=storm] .weather-motion:after{content:'';position:absolute;inset:0;background:#b8cee2;animation:storm-glow 9s infinite}
+html[data-screen=weather] body,html[data-screen=report] body{background:linear-gradient(155deg,#10352bde,#0a211cf5 48%),url(forest.jpg) center/cover fixed;color:#f1fbf5}
+html[data-screen=weather] body:before,.atmosphere{display:none}
+html[data-screen=weather] .hero{border-radius:21px;margin-bottom:14px}
+html[data-screen=weather] .hero:before{background-image:linear-gradient(#071e2480,#062019a0),url(forest.jpg)}
+html[data-screen=weather] .card,html[data-screen=report] article,html[data-screen=report] aside,html[data-screen=map] :is(#tools,#timeline,header,#pointCard),dialog{background:var(--surface,#193e32);border-color:#7fae9548;color:#effaf4}
+html[data-screen=map] :is(#shell,#layers){background:var(--ground,#0a271e)}
+html[data-screen=weather] .primary,html[data-screen=report] button.selected,html[data-screen=map] button.selected{background:#38765a;color:white}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition:none!important}.weather-motion{display:none}}
