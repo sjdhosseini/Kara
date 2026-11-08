@@ -1,0 +1,8 @@
+@font-face{font-family:ForestFa;src:url(../fonts/Vazirmatn.ttf)}
+:root,body{font-family:ForestFa,Tahoma,sans-serif;background:var(--ground);color:#f1fbf5}
+body{background-image:linear-gradient(165deg,#082219b8,var(--ground) 58%),url(../forest.jpg);background-size:cover;background-position:center}
+header,nav{background:var(--ground);border-color:#739b893d}
+.game-tile,.game-tile:first-child,.panel,.settings-card,.card,.score,.result-row,.secondary,nav button,.page-controls button{background:linear-gradient(145deg,var(--surface),var(--ground));border-color:#749d8a7a;color:#f2fff8}
+.primary,.primary.go,button.active{background:#387557;color:#fff}
+input:not([type=checkbox]):not([type=color]),select,textarea{background:var(--ground);border-color:#5b8173;color:#f3fff8}
+.note,.fine,.game-tile small,.intro p,.brand small,#version{color:#c3dacd}.eyebrow,.timer{color:#b2eed0}
